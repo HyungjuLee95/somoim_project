@@ -45,5 +45,20 @@ ORACLE SQL base.
 > 본래 목표를 sql문을 통해 mapper로 구분해 내겠다를 목표로 잡았기에 추가 칼럼을 두었습니다. <br><br>
 > 다만, 칼럼이 굳이 필요하느냐?를 생각해보았을 때, 코딩을 통해 해당 리스트에 List_num과 user_id가 일치하는 항목이 있느냐 없느냐로 구분을 할 수 있는 점을 항시 염두해두었습니다.
 
+---
+### 쪽지 기능
 
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/73b63795-52d8-4241-995b-73d1a18bc20a)
 
+> 쪽지 기능의 경우, 아래와 같이 DB를 설계
+---
+#### MSG_TITLE		쪽지 제목
+#### RECEIVER_ID		수신자 아이디
+#### GUBUN	수신/발신 구분
+#### CREATE_DATE	수신/발신 날짜
+#### MSG_CONTENT	쪽지 내용
+#### SENDER_ID		발신자 아이디
+#### USER_ID		유저 아이디
+#### READ_YN		읽음표시
+---
+> 

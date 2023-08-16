@@ -52,13 +52,13 @@ ORACLE SQL base.
 
 > 쪽지 기능의 경우, 아래와 같이 DB를 설계
 ---
-#### MSG_TITLE		쪽지 제목
-#### RECEIVER_ID		수신자 아이디
-#### GUBUN	수신/발신 구분
-#### CREATE_DATE	수신/발신 날짜
-#### MSG_CONTENT	쪽지 내용
-#### SENDER_ID		발신자 아이디
-#### USER_ID		유저 아이디
-#### READ_YN		읽음표시
+##### MSG_TITLE		쪽지 제목
+##### RECEIVER_ID		수신자 아이디
+##### GUBUN	수신/발신 구분
+##### CREATE_DATE	수신/발신 날짜
+##### MSG_CONTENT	쪽지 내용
+##### SENDER_ID		발신자 아이디
+##### USER_ID		유저 아이디
+##### READ_YN		읽음표시
 ---
 > 

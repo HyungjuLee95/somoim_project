@@ -18,6 +18,9 @@ ORACLE SQL base.
 
 ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/be8e2f70-fb41-4095-b3de-84eab0e6fc45)
 
+
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/b5a1a769-e6c2-467a-8562-afc6fb824a1b)
+
  > Db에 대한 설명
 >  Comment와 reply의 테이블을 따로 두지 않고, 동일하게 구성을 하였습니다. 왜냐하면 댓글과 대댓글을 "특정 게시글에 아랫단에 달리는 글"이라는 공통 속성으로 생각을 했을 때, Depth라는 칼럼을 둔다면 테이블을 따로 두지 않고 mapper를 통해 sql문 자체적으로 해당 기능을 수행할 수 있을 것이라고 판단했습니다.<br><br>
 > 하여, 소모임이 개설되고 소모임 별 게시판에 있는 글에 댓글이 달리는 것으로 소모임마다 부여가되는 Somoim_num과 게시글마다 부여가 되는 Somoim_board_num을 기본 베이스로 구분 인자로 두는 칼럼을 생성했습니다.<br><br>
@@ -31,7 +34,7 @@ ORACLE SQL base.
 
 ---
 
-### 좋아요(Good_count) DB 설계
+### 좋아요(Good_count) 
 
 ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/ef6bed75-60f0-403f-a898-da33aefd2e3b)
 
@@ -46,9 +49,10 @@ ORACLE SQL base.
 > 다만, 칼럼이 굳이 필요하느냐?를 생각해보았을 때, 코딩을 통해 해당 리스트에 List_num과 user_id가 일치하는 항목이 있느냐 없느냐로 구분을 할 수 있는 점을 항시 염두해두었습니다.
 
 ---
-### 쪽지 기능
+### 쪽지 기능(Message)
 
 ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/73b63795-52d8-4241-995b-73d1a18bc20a)
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/7dc1839b-89df-459c-9703-387cafcf9e9c)
 
 > 쪽지 기능의 경우, 아래와 같이 DB를 설계
 ---
@@ -61,4 +65,9 @@ ORACLE SQL base.
 ##### USER_ID		유저 아이디
 ##### READ_YN		읽음표시
 ---
-> 
+> 웹소켓을 이용하려 하였으나, 시간적인 문제로 인하여 LongPolling 기능을 이용.
+> LongPolling을 선택한 이유 : LongPolling은 일정 시간마다 서버에 요청을 보내 다시 응답을 받는 것입니다. 그렇다면 지속적으로 서버에 요청이 들어가기 때문에 이것도 서버에 부담이 될 수 있습니다.<br><br>
+> 그렇지만 마이페이지에 쪽지함이 있으며, 우리 페이지의 주목적은 소모임 게시판의 활용이며, 소모임 게시판을 이용하여 소통하는 것입니다. <br><br>
+> 이 말은 즉, 마이페이지에 머물러있는 시간보다 소모임 게시판에 머물러있는 시간이 많은 것입니다.
+> 하여, 마이페이지 하단에 위치하고있는 쪽지 기능의 경우, LongPolling으로 진행을 하여도 서버에 큰 부담이 없을 것으로 판단을 하였습니다.
+> Js를 통해 구성을 하였으며, Controller에서 전체 내역에 대한 목록을 json형태로 반환해주면 ajax를 통해 데이터를 처리하며, <br><br> setTimeout(longPolling, 5000); 와 재귀함수의 형태로 longpolling 방식을 이용하여 진행하였습니다.

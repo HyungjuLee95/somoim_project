@@ -226,12 +226,58 @@ Controller
 >   
 > 해결 > 우선, 코드가 구성이 된 상태와 협업으로 진행이 되는 과정 중에 테이블을 수정할 경우, 문제가 발생할 수 있음을 고려하여 어떠한 부분에서 프로필이 변경이 될 경우, 가장 직접적으로 변경이 되는 부분을 확인하였고, 그 부분의 값을 불러와 해당 값을 get해서 필요한 객체에 set을 시켜 필요한 정보를 불러와 진행하였으며, 원했던 변경 후 바로 적용이 가능하게 완성하였습니다.
 
-2) 게시글에 대해서 좋아요를 눌렀을 때, 좋아요 취소가 되지 않았던 문제.
+2) 게시글에 대해서 좋아요를 눌렀을 때, 좋아요 취소가 되지 않았던 문제.(정확하게는 3일, 일주일 뒤 취소를 어떻게 할 것인가?)
 > detail > 어띠보면 단순한 문제일 수 있습니다. 브라우져에 로그인하였을 때, 세션에 유져의 ID가 저장이 되도록 설정을 해놓았기에, session에 저장된 아이디와 비교하요 최초 좋아요를 눌렀다면 좋아요 카운트가 올라가게하며, session에 저장된 아이디와 추가로 session에 넣어준 좋아요에 대한 id가 같으면 취소 버튼이 활성화될 수 있도록 할 수도 있습니다. 다만, 문제는 좋아요라는 것은 지금은 좋아요를 눌렀으나 하루 이틀 혹은 일주일 뒤에 좋아요를 취소할 수 있어야합니다. 그렇다면 session에 저장하는 것만으로는 어려움이 있을 수 있습니다.<br
 > 
 > 해결 > 좋아요에 대한 table을 따로 생성했습니다. 이 table의 역할은 좋아요를 눌렀을 경우, 해당 게시글을 찾을 수 있는 아주 간단한 최소 칼럼으로 구성되어 있습니다. 하여, 어떠한 유져가 좋아요를 눌렀다면 해당 user_id와 소모임에 대한 정보를 넣어주는 것입니다. 이렇게한다면 좋아요 취소의 경우, 해당 db에 데이터가 있어 null 결과값이 null이 아니라면 좋아요 취소 버튼이 활성화되고, 취소를 한다면 해당 리스트에서 취소를 누르는 좋아요 기록을 삭제만 해준다면 이후에 별도에 다른 작업 없이 좋아요를 다시 누를 수 있도록 하였습니다.
 
-3)
-3) 
-4)  
+3) 추가 번회로 css나 html 구조에 대한 문제
+> 흔히 배웠던 것들로는 input과 form action을 사용하여 간단하게 처리할 수 있다. 이것은 근데 form 안에 버튼이 있어야하며, 값이 제출이 되어야한다. 그렇다면 보통은 버튼 옆에 input이 있어야하며, 아무리 margin padding 등으로 이쁘게 조절을 하여도 이쁘게 조절이 되지 않는다.  다른 부분에 input 태크에 클래스를 부여하고, 그 클래스가 설정된 input에 값이 설정될 수 있도록 js를 통해 진행하였습니다.
+> 해당 코드 참고 -----------
+>    function replaceWithForm(button) {
+        var parentDiv = button.parentNode;
 
+        var form = document.createElement('form');
+        form.action = 'som_dcomm_insertOK.do';
+
+        var div = document.createElement('div');
+        div.className = 'join_commnets_insert_section';
+
+        var inputText = document.createElement('input')
+        inputText.type = 'text';
+        inputText.placeholder = '대댓글 작성';
+        inputText.name = 'content';
+        inputText.value = '${c_com.content}';
+        inputText.style.width = '80%';
+        inputText.style.borderTop = 'none';
+        inputText.style.borderLeft = 'none';
+        inputText.style.borderRight = 'none';
+
+
+
+
+        var buttonSubmit = document.createElement('button');
+        buttonSubmit.type = 'submit';
+        buttonSubmit.textContent = '댓글 작성';
+        buttonSubmit.style.marginLeft = '10px';
+        buttonSubmit.style.width = '80px';
+        buttonSubmit.style.height = '40px';
+        buttonSubmit.style.fontSize = '0.7rem';
+        buttonSubmit.style.textAlign = 'center';
+        buttonSubmit.style.justifyContent = 'center';
+
+        var arrowRightIcon = document.createElement('i');
+        arrowRightIcon.className = 'fa-solid fa-arrow-right';
+
+
+        div.appendChild(arrowRightIcon);
+
+        div.appendChild(inputText);
+        div.appendChild(buttonSubmit);
+
+        form.appendChild(div);
+
+        parentDiv.replaceChild(div, button);
+    }
+</script>
+>-----------

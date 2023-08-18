@@ -74,7 +74,12 @@ ORACLE SQL base.
 >
 ---
 ### 코드 설계(Comments and Reply)
-```
+
+BoardVO
+    ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/a5de8796-c5ae-4418-85fa-9f0103190387)
+
+
+
  @RequestMapping(value = "/join_selectOne.do", method = RequestMethod.GET)
     public String join_selectOne(Somoim_BoardVO vo, Model model,Somoim_Question_VoteVO qvo,Somoim_Choice_Vote ch_vo) {
         log.info("join_selectOne.do().....{}", vo);
@@ -190,7 +195,7 @@ ORACLE SQL base.
 //--------------------------------------
         return "board/join_selectOne";
     }
-```
+
 ### 겪었던 문제 
 1) 기존 코드가 완성된 상태에서 profile에 대한 DB 설계가 구성되어 있지 않음을 확인했습니다
 > detail > 댓글 대댓글에는 댓글을 작성한 사람의 프로필 사진이 들어갑니다. 최초에 가입을 진행한 상태에서 소모임 프로필을 변경했을 경우, 변경 전에 작성되어 있는 프로필 사진은 변경이 되지 않고, 변경 후에 새로 작성된 댓글 대댓글에만 변경된 프로필이 적용되는 문제를 확인하였습니다.<br>

@@ -75,9 +75,33 @@ ORACLE SQL base.
 ---
 ### 코드 설계(Comments and Reply)
 
-BoardVO
-    ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/a5de8796-c5ae-4418-85fa-9f0103190387)
+   BoardVO
 
+---
+@Data
+public class Somoim_BoardVO{
+
+    private int num;
+    private String title;
+    private  String content;
+    private String save_image;
+    private Date write_date;
+    private int view_count;
+    private int good_count;
+    private int vote_num;
+    private int som_member_num;
+    private int somoim_num;
+    private String user_id;
+    private MultipartFile file;
+    private String save_name;
+
+    private int startRow;
+    private int endRow;
+
+
+}
+---
+Controller
 
 
  @RequestMapping(value = "/join_selectOne.do", method = RequestMethod.GET)

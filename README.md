@@ -71,3 +71,130 @@ ORACLE SQL base.
 > 이 말은 즉, 마이페이지에 머물러있는 시간보다 소모임 게시판에 머물러있는 시간이 많은 것입니다.
 > 하여, 마이페이지 하단에 위치하고있는 쪽지 기능의 경우, LongPolling으로 진행을 하여도 서버에 큰 부담이 없을 것으로 판단을 하였습니다.
 > Js를 통해 구성을 하였으며, Controller에서 전체 내역에 대한 목록을 json형태로 반환해주면 ajax를 통해 데이터를 처리하며, <br><br> setTimeout(longPolling, 5000); 와 재귀함수의 형태로 longpolling 방식을 이용하여 진행하였습니다.
+>
+---
+### 코드 설계(Comments and Reply)
+```
+ @RequestMapping(value = "/join_selectOne.do", method = RequestMethod.GET)
+    public String join_selectOne(Somoim_BoardVO vo, Model model,Somoim_Question_VoteVO qvo,Somoim_Choice_Vote ch_vo) {
+        log.info("join_selectOne.do().....{}", vo);
+        List<Somoim_BoardVO> infos = service.select_user_info();
+        log.info("infos..{}", infos);
+
+
+                String userId = (String)session.getAttribute("user_id");
+                Somoim_BoardVO user_profile= new Somoim_BoardVO();
+                user_profile.setUser_id(userId);
+
+                Somoim_BoardVO User_save_name = service.LOGIN_ID_PROFILE(user_profile);
+
+                model.addAttribute("User_save_name", User_save_name);
+
+
+//--------------------------------------
+        Somoim_BoardVO vo2 = service.selectJoin(vo);
+        log.info("test...{}", vo2);
+        for (Somoim_BoardVO info : infos) {
+            if (vo2.getUser_id().equals(info.getUser_id())) {
+                vo2.setSave_name(info.getSave_name());
+            }
+        }
+//--------------------------------------
+
+        model.addAttribute("vo2", vo2);
+
+        if(vo2.getVote_num() != 0){
+
+            log.info("getVoteNum..."+vo2.getVote_num());
+            qvo.setNum(vo2.getVote_num());
+
+            Somoim_Question_VoteVO qvo2 = service.SELECT_VOTE_NUM(qvo);
+            log.info("qvo2_test...{}",qvo2);
+
+            model.addAttribute("qvo2", qvo2);
+
+            ch_vo.setSom_qvote_num(qvo2.getNum());
+            List<Somoim_Choice_Vote> ch_vo2 = service.SELECT_CHOICE_ITEM(ch_vo);
+            for(Somoim_Choice_Vote vo3 : ch_vo2){
+
+            }
+
+            model.addAttribute("ch_vo2",ch_vo2);
+
+
+
+
+        }
+
+
+//--------------------------------------
+
+
+        som_commentsVO cvo = new som_commentsVO();
+        cvo.setSom_board_num(vo2.getNum());
+        cvo.setSave_name(vo2.getSave_name());
+        System.out.println("vo2.getNum!!!!!!!!!!!!:" + vo2.getNum());
+        cvo.setSomoim_num(vo2.getSomoim_num());
+        System.out.println("cvo:" + cvo.toString());
+        List<som_commentsVO> coms = commService.selectAll(cvo);
+
+
+        for (som_commentsVO com : coms) {
+            for (Somoim_BoardVO info : infos) {
+
+                if (com.getUser_id().equals(info.getUser_id())) {
+                
+                    if (!com.getSave_name().equals(info.getSave_name())) {
+                       
+                        com.setSave_name(info.getSave_name());
+                    
+                    }
+                }
+            }
+            log.info(com.toString());
+
+        }
+
+
+        System.out.println("coms:" + coms.toString());
+
+
+        som_comm_commentsVO c_cvo = new som_comm_commentsVO();
+        c_cvo.setSom_board_num(cvo.getSom_board_num());
+        c_cvo.setSomoim_num(cvo.getSomoim_num());
+        log.info("cvo.getnum..{}", cvo.getNum());
+        List<som_comm_commentsVO> c_coms = new ArrayList<som_comm_commentsVO>();
+        c_coms = c_commService.selectAll(c_cvo);
+
+
+        System.out.println("c_cvo:" + c_cvo);
+
+
+        System.out.println("c_cvo.getSom_board_num:" + c_cvo.getSom_board_num());
+        System.out.println("c_coms:" + c_coms.toString());
+
+
+        model.addAttribute("coms", coms);
+        model.addAttribute("c_coms", c_coms);
+        service.vvcountup(vo);
+
+//--------------------------------------
+
+//        String user_id = (String) session.getAttribute("user_id");
+        vo.setUser_id(user_id);
+        Somoim_BoardVO good_count_mem= service.select_all_goodList(vo);
+        log.info("user_id..{}", user_id);
+        model.addAttribute("good_count_mem", good_count_mem);
+        log.info("good_count_mem..{}", good_count_mem);
+
+//--------------------------------------
+        return "board/join_selectOne";
+    }
+```
+### 겪었던 문제 
+1) 기존 코드가 완성된 상태에서 profile에 대한 DB 설계가 구성되어 있지 않음을 확인했습니다
+> detail > 댓글 대댓글에는 댓글을 작성한 사람의 프로필 사진이 들어갑니다. 최초에 가입을 진행한 상태에서 소모임 프로필을 변경했을 경우, 변경 전에 작성되어 있는 프로필 사진은 변경이 되지 않고, 변경 후에 새로 작성된 댓글 대댓글에만 변경된 프로필이 적용되는 문제를 확인하였습니다.<br>
+   
+> 해결 > 우선, 코드가 구성이 된 상태와 협업으로 진행이 되는 과정 중에 테이블을 수정할 경우, 문제가 발생할 수 있음을 고려하여 어떠한 부분에서 프로필이 변경이 될 경우, 가장 직접적으로 변경이 되는 부분을 확인하였고, 그 부분의 값을 불러와 해당 값을 get해서 필요한 객체에 set을 시켜 필요한 정보를 불러와 진행하였으며, 원했던 변경 후 바로 적용이 가능하게 완성하였습니다.
+3)   
+

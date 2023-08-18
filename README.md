@@ -281,3 +281,20 @@ Controller
     }
 </script>
 >-----------
+
+### 좋아요(Good_count) 코드 설계
+
+#### -join_selectOne.do에서 사용된 좋아요
+> ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/1d2fc52d-aee0-4626-81ec-92c4bc2f818c)
+
+용도 > 좋아요 버튼과 좋아요 취소의 경우에 위에 설명한 것과 같이 리스트에 해당 값이 null인가 아닌가에 따라서 좋아요 버튼과 취소 버튼이 활성화됩니다. 하여, 이 부분을 통하여 좋아요 table에 값이 null인지 아닌지를 판단해주는 지표라고 생각할 수 있습니다.
+
+#### -좋아요 관련 메서드
+> ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/b556d8d3-fcd8-43b1-b1de-df504e221211)  <br>
+> 용도 > adding_good_count_list라는 것은 좋아요를 누를 경우, 해당 좋아요를 나중에라도 취소할 수 있도록, 그리고 좋아요한 게시글을 따로 표시해줄 때 편리하기 위해, 필요하기 때문에 리스트에 담는 것을 의미합니다.<br>
+> 생각해본다면 DB TABLE에 추가되어 있는 것들에 대해서 해당 게시글에 대한 정보를 포함한 데이터 수를 counting한다면 그것이 좋아요 갯수가 되는 것이기도 하기에 위에 말한 나중에 취소할 수 있는 것, 좋아요한 게시글을 따로 표시해주는 것, 좋아요 갯수를 표시하는 것에서 모두 편리성을 가져갈 수 있을 것으로 파단이 되어 팀원들에게 위의 방법에 대한 이야기에 대해 의견을 전달 및 반영하여 계획하고 도입하였습니다.
+
+### -html에서의 이용
+> ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/45b53346-b444-4f03-99d1-af6f956264ae)
+
+

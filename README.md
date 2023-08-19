@@ -76,7 +76,7 @@ ORACLE SQL base.
 > Js를 통해 구성을 하였으며, Controller에서 전체 내역에 대한 목록을 json형태로 반환해주면 ajax를 통해 데이터를 처리하며, <br><br> setTimeout(longPolling, 5000); 와 재귀함수의 형태로 longpolling 방식을 이용하여 진행하였습니다.
 >
 ---
-### 코드 설계(Comments and Reply)
+### Comments and Reply 코드 설계
 
    BoardVO
 

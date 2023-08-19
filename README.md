@@ -1,7 +1,7 @@
 # somoim_project
 ### 제작기간 : 6월 9일 ~ 7월 15일 
 ### 맡은 부분 
-  > 페이지 CSS 파트, comment(댓글), reply(대댓글), 쪽지 기능, 고객센터, 이벤트 페이지(관리자 전용 CRUD),좋아요 기능, bug report, 소모임 가입 인원 추가, <br>
+  > 페이지 CSS 파트, comment(댓글), reply(대댓글), 쪽지 기능, 고객센터, 이벤트 페이지(관리자 전용 CRUD),좋아요 기능, bug report, <br>
   > 소모임 가입 여부에 따른 메뉴 확인
 ### 개발 스택
 1. Frontend : html, css, js
@@ -306,4 +306,65 @@ good_count_mem 은 DAOimpl에서 goodcountmem과 연결이 되어있습니다. �
 ### -html에서의 이용
 > ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/45b53346-b444-4f03-99d1-af6f956264ae)
 
+> Community 부분에도 해당 부분을 팀원에게 설명해주며, 위와 비슷한 방식으로 코드 구성을 할 수 있도록 도와주었습니다.
+
+
+---
+### 관리자 전용 페이지에 대한 CRUD / 
+
+이벤트 페이지, 공지 등 유져가 사용하는 것이 아닌 관리자자의 직접적인 CRUD가 필요한 부분에 대해서는 작성자만 글을 작성하고 수정, 삭제할 수 있어야합니다.<br>
+아래와 같은 부분을 고민하였습니다.<br>
+1) js를 통하여 특정 아이디로 로그인 했을 때, 작성 혹은 삭제의 버튼이 확인될 수 있도록 한다.
+2) 테이블을 따로 만들어서 해당 아이디에 대한 관리자 권한 확인을 서버에서 진행 후, 정보를 반환하여 처리한다(참일 경우 !=null, 거짓일 경우 =null)
+
+두 가지 방법에 대하여 의논하여 결정했던 내용은 1번이었으며, 이유는 "관리자 계정은 몇개 되지 않을 것이므로 js를 통하여 관리자 계정을 통하여 추가해주자"라는 의견이 많아서 1번으로 선택 후 진행하였습니다.<br>
+다만, 1번의 경우를 고려하였을 때, 별도로 설정을 해주지 않는다면 개발자 도구에서 코드를 확인하였을 때, 관리자 계정이 쉽게 드러날 수 있다는 문제가 있었으나, 우선적으로 진행하기로 하였습니다.<br>
+
+진행하였던 js 코드는 아래와 같습니다.
+
+```
+
+ <c:if test="${user_id eq 'tester'}">
+            <a href="InsertEvents.do"><button>작성</button></a>
+<!--             관리자 계정 "tester"만 보이는 메뉴 --></c:if>
+```
+단순하게 처리하였지만, db TABLE을 따로 두어 구성하는 것이 더욱 안정적일 수 있겠다라는 생각을 하였습니다.
+
+
+
+### 소모임 가입 여부에 따른 top 메뉴 확인 
+이 부분은 아래의 부분입니다. 소모임이 개설이 된 후, 비가입자가 해당 소모임을 방문하였을 때에는 소모임 페이지 내에서 아래 화면이 확인이 됩니다.
+#### 비가입자가 확인한 소모임 내 상위 메뉴
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/0ea0961b-8b87-49fc-827e-f80d38a65723)
+
+#### 가입 후, 소모임 내 상위 메뉴
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/f7e19348-ce03-4ca2-8eb8-ee3cc00667ba)
+<br>
+비가입자는 홈 메뉴만 확인이 되며, 가입자의 경우에는 모든 메뉴가 확인이 되고 있습니다.
+아래 코드를 이용하였습니다.
+```
+<c:set var="member_menu_check" value="false" />
+<c:set var="som_member_check" value="false" />
+
+<%-- somoimUser_id 리스트를 순회하며 일치하는 값이 있는지 검사 --%>
+<c:forEach items="${somoimUser_id}" var="som_user_id">
+    <c:if test="${som_user_id.user_id eq user_id}">
+        <c:set var="member_menu_check" value="true" />
+        <c:set var="som_member_check" value="true" />
+        <jsp:include page="./som_top_menu.jsp"></jsp:include>
+    </c:if>
+</c:forEach>
+
+        <%-- member_menu_check 변수가 false일 경우에만 메뉴를 두 번째로 출력 --%>
+        <c:if test="${!member_menu_check}">
+            <div class="join_gnb">
+                <li><a href="som_selectOne.do?num=${num}">홈</a></li>
+            </div>
+        </c:if>
+```
+우선, 구성할 때의 생각은 이렇습니다.
+1) 멤버인지 아닌지, 어떤 메뉴를 보여줄지.
+이에따라 JSTL과 JSP를 이용하여 구성하였으며, 생각한 것은 처음 member_menu_check이라는 변수와 som_member_check이라는 두개의 변수를 flase로 초기화를 해주고 <br>
+,somoimUser_id(somoim에 가입한 유져 아이디 리스트)를 el로 받아 foreach를 사용하여 user_id와 일치하는 값이 있는 지를 확인하여 각 변수의 true로 설정해줍니다.<br>
+이것을 토대로 어떠한 메뉴를 표출할지 flase, true 의 값에 따라 해당 값을 출력하게 합니다.
 

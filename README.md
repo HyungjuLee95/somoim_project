@@ -368,3 +368,21 @@ good_count_mem 은 DAOimpl에서 goodcountmem과 연결이 되어있습니다. �
 ,somoimUser_id(somoim에 가입한 유져 아이디 리스트)를 el로 받아 foreach를 사용하여 user_id와 일치하는 값이 있는 지를 확인하여 각 변수의 true로 설정해줍니다.<br>
 이것을 토대로 어떠한 메뉴를 표출할지 flase, true 의 값에 따라 해당 값을 출력하게 합니다.
 
+
+### 홈화면 페이징(더보기 처리)
+
+#### 더보기 누르기 전 
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/73682f63-30f7-4c03-a6bf-ceb9d7f19d62)
+
+위와같이 등록된 최신 모임 4개를 홈 화면에 출력합니다. 이후에 더보기를 누르면 다음 4개의 항목을 출력합니다.<br>
+여기서 유져가 다음 더보기를 누른다면 모임에 대한 관심이 있음으로 판단을 하여, 전체 목록을 확인할 수 있는 페이지로 이동을 할 수 있도록 하였습니다.
+
+#### 더보기를 누른 후(한번)
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/e8d710ca-5b07-4bc7-91a8-de432acd358e)
+
+#### 더보기를 한번 더 누름(두번)
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/705df6ac-6ca1-4d5b-ac8e-ae26a4e21a95)
+위와 같이 전체 페이지로 이동합니다.
+
+
+

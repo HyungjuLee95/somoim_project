@@ -8,6 +8,9 @@
 2. Backend : js, mybatis, sts
 3. Database : mongoDB, Oracle
 
+### 목표
+> 원하는 기능을 아주 간단하게 표현할 수 있도록 해보자
+
 
 #### DB 설계(전체)
 ORACLE SQL base.

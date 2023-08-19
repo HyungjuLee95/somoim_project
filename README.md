@@ -291,7 +291,9 @@ Controller
 #### -join_selectOne.do에서 사용된 좋아요
 > ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/1d2fc52d-aee0-4626-81ec-92c4bc2f818c)
 
-용도 > 좋아요 버튼과 좋아요 취소의 경우에 위에 설명한 것과 같이 리스트에 해당 값이 null인가 아닌가에 따라서 좋아요 버튼과 취소 버튼이 활성화됩니다. 하여, 이 부분을 통하여 좋아요 table에 값이 null인지 아닌지를 판단해주는 지표라고 생각할 수 있습니다.
+용도 > 좋아요 버튼과 좋아요 취소의 경우에 위에 설명한 것과 같이 리스트에 해당 값이 null인가 아닌가에 따라서 좋아요 버튼과 취소 버튼이 활성화됩니다. 하여, 이 부분을 통하여 좋아요 table에 값이 null인지 아닌지를 판단해주는 지표라고 생각할 수 있습니다.<br>
+
+good_count_mem 은 DAOimpl에서 goodcountmem과 연결이 되어있습니다. 여기서 sqlsession을 이용하고 있으며, 이용된 쿼리문은 good_count_list에서 목록이 있는지 없는지를 확인하고있으며, 이 반환관은 값이 있으냐(!=null), 겂이 없느냐(=null)로 정보를 반환하게 됩니다. 이에 따라 아레 html에서 해당 정보를 이용하여 원하는 정보를 표시합니다.
 
 #### -좋아요 관련 메서드
 > ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/b556d8d3-fcd8-43b1-b1de-df504e221211)  <br>

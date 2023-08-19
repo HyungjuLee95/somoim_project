@@ -77,7 +77,7 @@ ORACLE SQL base.
 
    BoardVO
 
----
+```
 @Data
 public class Somoim_BoardVO{
 
@@ -98,11 +98,12 @@ public class Somoim_BoardVO{
     private int startRow;
     private int endRow;
 
-
 }
----
-Controller
 
+```
+Controller
+---
+```
 
  @RequestMapping(value = "/join_selectOne.do", method = RequestMethod.GET)
     public String join_selectOne(Somoim_BoardVO vo, Model model,Somoim_Question_VoteVO qvo,Somoim_Choice_Vote ch_vo) {
@@ -219,7 +220,7 @@ Controller
 //--------------------------------------
         return "board/join_selectOne";
     }
-
+```
 ### 겪었던 문제 
 1) 기존 코드가 완성된 상태에서 profile에 대한 DB 설계가 구성되어 있지 않음을 확인했습니다
 > detail > 댓글 대댓글에는 댓글을 작성한 사람의 프로필 사진이 들어갑니다. 최초에 가입을 진행한 상태에서 소모임 프로필을 변경했을 경우, 변경 전에 작성되어 있는 프로필 사진은 변경이 되지 않고, 변경 후에 새로 작성된 댓글 대댓글에만 변경된 프로필이 적용되는 문제를 확인하였습니다.<br>
@@ -233,7 +234,9 @@ Controller
 
 3) 추가 번회로 css나 html 구조에 대한 문제
 > 흔히 배웠던 것들로는 input과 form action을 사용하여 간단하게 처리할 수 있다. 이것은 근데 form 안에 버튼이 있어야하며, 값이 제출이 되어야한다. 그렇다면 보통은 버튼 옆에 input이 있어야하며, 아무리 margin padding 등으로 이쁘게 조절을 하여도 이쁘게 조절이 되지 않는다.  다른 부분에 input 태크에 클래스를 부여하고, 그 클래스가 설정된 input에 값이 설정될 수 있도록 js를 통해 진행하였습니다.
-> 해당 코드 참고 -----------
+> 해당 코드 참고
+---
+```
 >    function replaceWithForm(button) {
         var parentDiv = button.parentNode;
 
@@ -280,7 +283,8 @@ Controller
         parentDiv.replaceChild(div, button);
     }
 </script>
->-----------
+```
+---
 
 ### 좋아요(Good_count) 코드 설계
 

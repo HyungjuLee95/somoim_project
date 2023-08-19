@@ -2,7 +2,7 @@
 ### 제작기간 : 6월 9일 ~ 7월 15일 
 ### 맡은 부분 
   > 페이지 CSS 파트, comment(댓글), reply(대댓글), 쪽지 기능, 고객센터, 이벤트 페이지(관리자 전용 CRUD),좋아요 기능, bug report, <br>
-  > 소모임 가입 여부에 따른 메뉴 확인
+  > 소모임 가입 여부에 따른 메뉴 확인, 메인 화면 페이징(더보기)
 ### 개발 스택
 1. Frontend : html, css, js
 2. Backend : js, mybatis, sts

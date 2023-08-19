@@ -346,7 +346,7 @@ good_count_mem 은 DAOimpl에서 goodcountmem과 연결이 되어있습니다. �
 <c:set var="member_menu_check" value="false" />
 <c:set var="som_member_check" value="false" />
 
-<%-- somoimUser_id 리스트를 순회하며 일치하는 값이 있는지 검사 --%>
+<%-- somoimUser_id 리스트를 돌려 일치하는 값이 있는지 확인 --%>
 <c:forEach items="${somoimUser_id}" var="som_user_id">
     <c:if test="${som_user_id.user_id eq user_id}">
         <c:set var="member_menu_check" value="true" />
@@ -355,7 +355,7 @@ good_count_mem 은 DAOimpl에서 goodcountmem과 연결이 되어있습니다. �
     </c:if>
 </c:forEach>
 
-        <%-- member_menu_check 변수가 false일 경우에만 메뉴를 두 번째로 출력 --%>
+        <%-- member_menu_check 변수가 false일 경우에 출력 --%>
         <c:if test="${!member_menu_check}">
             <div class="join_gnb">
                 <li><a href="som_selectOne.do?num=${num}">홈</a></li>

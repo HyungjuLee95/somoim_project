@@ -384,5 +384,99 @@ good_count_mem 은 DAOimpl에서 goodcountmem과 연결이 되어있습니다. �
 ![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/705df6ac-6ca1-4d5b-ac8e-ae26a4e21a95)
 위와 같이 전체 페이지로 이동합니다.
 
+구성한 코드는 아래와 같습니다.
+```
+<script type="text/javascript">
+   $(document).ready(function() {
+      var currentPage = 1; // 시작 페이지 번호
+      var itemsPerPage = 4; //표시 항목 수
+      $("#more_info").click(function() {
+         currentPage++; // 페이지 번호 증가
+         loadMoreItems();
+      });
+      function loadMoreItems() {
+          if (currentPage > 2) {
+              window.location.href = "som_selectAll.do";
+              return;
+          }
+         $.ajax({
+            url: "json_somoim_selectAll.do", // json 목록 가져오기
+            method: "GET",
+            data: { page: currentPage, itemsPerPage: itemsPerPage },
+            dataType: "json",
+            success: function(response) {
+               console.log("ajax on");
+               console.log("response", response);
+               //불러온 항목 처리 및 가공, 출력(html에 추가)
+               var items = response;
+               var html = "";
+               var startIndex = (currentPage - 1) * itemsPerPage;
+               var endIndex = startIndex + itemsPerPage;
+               if (startIndex >= items.length) {
+                  // 요청한 페이지에 추가 항목이 없는 경우
+                  $(".more_but").hide();
+                  alert("모든 게시글을 표시했습니다!");
+                  return;
+               }
+               if (endIndex > items.length) {
+                  // 마지막 페이지에서 아이템의 인덱스 조정
+                  endIndex = items.length;
+               }
+               for (var i = startIndex; i < endIndex; i++) {
+                  var vo = items[i];
+                  console.log("vo[i]...{}", vo);
+                  console.log("vo.save_img...{}", vo.somoim_img);
+                  console.log("o.som_member_num...{}", vo.category);
+                  console.log("vo.title...{}", vo.som_title);
+                  console.log("vo.write_date...{}", vo.create_date);
+                  html += '<li>';
+                  html += ' <div class="moimst_list_01_img_box">';
+                  html += ' <img style="height: 100%" src="resources/uploadimg/' + vo.somoim_img + '">';
+                  html += ' </div>';
+                  html += ' <div class="main_selectList">';
+                  html += ' <p class="hashtag">' + vo.category + '</p>';
+                  html += ' <h1>' + vo.som_title + '</h1>';
+                  html += ' <p class="sub_tit">' + vo.som_title + '</p>';
+                  html += ' </div>';
+                  html += '</li>';
+               }
+               $(".selectAJAX").append(html);
+            },
+            error: function(xhr, status, error) {
+               console.error(error);
+            }
+         });
+      }
+   });
+```
+---
+@RestController
+
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/357f6fa7-bc88-4b45-91f5-921c34ba7904)
+
+---
+
+전체 개설된 소모임에 대한 정보를 json으로 가져옵니다. 비동기 통신으로 서버에 리다이렉트 없이 더보기 화면이 표출되도록 진행하였습니다.<br>
+기존 항목 4개는 기본적으로 두되, 이후, 기존 페이지 넘버로 하는 것과 비슷한 방식으로 2번째 페이지를 추가하는 느낌, 즉, 더보기 버튼을 누르면 기존 이미 보여진 4개는 두고, 추가적으로 두번째 페이지에 해당되는 4개의 항목이 추가적으로 생성이 되게 구상하고 이에 따라 코드를 작성하였습니다. <br>
+
+#### 겪었던 문제는 기존 4개를 어떻게 표시할 것이냐? "페이징 처리" 자체에 대한 코드 구성 원리 및 인덱스에 관련한 식을 어떻게 구성할 것인가.
+이 부분은 처음 페이징 처리를 진행하였던 것이라, 모든 것을 이해하고 넘어가려하니 시간이 조금 소요된 부분이 좀 있는 것 같습니다.<br>
+다만, 이부분에 대해서 각각의 변수를 첫페이지를 출력하는 미리 출력하는 방식으로 생각하고 구성하였더니 조금 편리했으며, 이해한 후에는 간단하게 처리할 수 있었던 것 같습니다.<br>
 
 
+# 프로젝트 결과 
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/041749e3-f659-414a-b831-38bad10b03e7)
+
+## 느낀점 ) 
+### 혼자만의 힘으로는 할 수 있으나, 그것은 한계가 있을 수 있다. 협업은 중요하며, 효율적인 방식으로 진행할 수 있도록 모두 의견을 조율하는 것, 설계하는 것 또한 능력이다.
+ 프로젝트를 하며 느낀 점은 정말 많은거 같습니다. 그 중에 3가지를 꼽는다면 첫 번째는 협업의 중요성, 두 번째는 코딩에 대한 즐거움, 세 번째는 포기하지 않고 타협하지 않는 것입니다.
+ 설계부터 테스트 기간 다 포함해서 실 코딩 시간은 3주 조금 안되는 시간이었던 것 같습니다. 페이지를 본다면 분명, 그렇게 많은 페이지들이 아닙니다. 겉으로 보았을 때에는 이게 뭐 얼마나 힘이 필요하겠어 라는 생각이 들지 모르지만 실제로 한부분 한부분 코딩이 필요하면 현실적으로 그 기간동안 혼자했다면 처음 페이지를 만들어보는 저에게는 불가능했을 것입니다. 모든 팀원들이 파트를 나누고, 협업을 하고, 서로 새로운 부분, 공부한 부분을 공유하며 함께 성장하고, 함께 일구어낸 결과인 것 같습니다. 물론 여러 잡음들도 있었지만, 모두 같이 극복하며, 이에 따라 협업의 중요성을 느낄 수 있는 계기가 되었습니다.<br>
+ 
+ 두 번째는 코딩에 대한 즐거움입니다. 물리학과를 전공하여 본래 이것저것 뜯어보고 파악하고 관찰하고 실험해보고를 즐겼던게 습관들이 코딩에 대한 즐거움에 한 몫 했던거 같습니다. 이 얘기를 하는 이유는 프로젝트를 하면서 끊임없이 찾아보고 끊임없이 생각하고 잠도 안자고 했던 것 같습니다. 그 이유는 알면 알수록, 머리에 넣으면 넣을수록, 코딩을 하면 할수록 실패해도 재밋고, 이해가 안되어도 재밋기에 즐거움을 느꼇고, 이에 따라 포기하지 않고 할 수 있었던 것 같습니다.<br>
+ 앞으로도 지속적으로 공부를 하며, 더욱 정진할 수 있는 원동력과 경험이 된거 같습니다.<br>
+ 
+ 세 번째는 코딩을 하면서 느꼇던 것입니다. 이 직업이 새로운 기술이 빨리빨리 적용이 되고, 이에 적응하고 끊임없이 공부를 해야하는 직종입니다. 이게 무슨 말이냐?라고 한다면 만약 포기했더라면 기능을 좀 더 이쁘게, 편리하게 작성하지 못했을 것이며, 코드를 어떻게 구상할지에 대한 생각조차 할 수 없었을 것입니다. 또한 포기해버렸다면 아예 이 프로젝트에 대한 결과를 만들어 낼 수 없었을 것이며, 제가 느꼇던 저의 소중한 경험, 지식들을 갖지 못했을 것입니다. 이를 초심삼아 계속 초심으로 열심히 공부하고 해보고를 반복하며 멋지게 성장해야겠다는 생각을 하였습니다. 하여 이후에 기존 구상하였던 코드들에 대하여 다른 방식으로 수정을 해볼 것이며, 더욱 노력하여 볼 것입니다.
+ 
+### 홈페이지 메인 
+
+![image](https://github.com/HyungjuLee95/somoim_project/assets/111270174/4ab329ab-dcd2-42fe-b740-1ee7c450a5e4)
